@@ -1,0 +1,4 @@
+{
+  "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+  "tdlMessage": "<TYPE>Company</TYPE><FETCH>$$Alias:Name</FETCH>"
+}

@@ -1,0 +1,36 @@
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+import { executeXml } from "../../core/index.js";
+import { buildXml } from "../../core/buildXml.js";
+import infoJson from "./info.json" with {type: "json"};
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const body = fs.readFileSync(path.join(__dirname, "..", "..", "body.xml"), "utf8");
+
+const period = async (company, fromDate, ToDate) => {
+    const staticVariables = `<SVCURRENTCOMPANY>${company}</SVCURRENTCOMPANY>
+    <SVFROMDATE TYPE="Date">${fromDate}</SVFROMDATE><SVTODATE TYPE="Date">${ToDate}</SVTODATE>`;
+
+    const xml = buildXml(body, {
+        staticVariables,
+        ...infoJson
+    });
+    console.log("xml : ", xml);
+
+    return await executeXml(xml);
+};
+
+const all = async (company) => {
+    const staticVariables = `<SVCURRENTCOMPANY>${company}</SVCURRENTCOMPANY>`;
+
+    const xml = buildXml(body, {
+        staticVariables,
+        ...infoJson
+    });
+
+    return await executeXml(xml);
+};
+
+export { period, all };
