@@ -1,6 +1,6 @@
 {
   "name": "tally-to-xml-tdl",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Simple, clean TDL and XML extraction and manipulation tools for Tally",
   "type": "module",
   "main": "src/index.js",
