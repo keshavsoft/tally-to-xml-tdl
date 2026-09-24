@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guide & Architecture — tally-to-xml-tdl</title>
+  <meta name="description" content="Deep architectural reference and internals of tally-to-xml-tdl: TDL queries, XML templates, and extension guides.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+          </svg>
+        </div>
+        <div class="brand-title">
+          <span>tally-to-xml-tdl</span>
+          <span class="version-badge">v1.6.1</span>
+        </div>
+      </a>
+
+      <!-- Navigation Tabs linking both pages -->
+      <nav class="nav-links">
+        <a href="index.html" class="nav-link" title="README and Quickstart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          README (Overview)
+        </a>
+        <a href="guide.html" class="nav-link active" title="Deep Architectural Guide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+          Full Guide
+        </a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="quick-install-pill" title="Click to copy install command">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span class="install-text">npm i tally-to-xml-tdl</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container with Sidebar -->
+  <main class="page-wrapper">
+    <div class="doc-guide-layout">
+
+      <!-- Sticky Left Sidebar (Table of Contents) -->
+      <aside class="guide-sidebar">
+        <div class="sidebar-title">On This Page</div>
+        <nav class="sidebar-nav">
+          <a href="#architecture" class="active">Architecture</a>
+          <a href="#the-xml-template">The XML Template</a>
+          <a href="#how-tdl-queries-work">How TDL Queries Work</a>
+          <a href="#core-modules">Core Modules</a>
+          <a href="#adding-a-new-master-query">Adding Master Queries</a>
+          <a href="#adding-a-new-voucher-type">Adding Voucher Types</a>
+          <a href="#error-handling">Error Handling</a>
+        </nav>
+      </aside>
+
+      <!-- Main Guide Content -->
+      <article class="guide-content">
+
+        <!-- Top Breadcrumb / Return Link -->
+        <div style="margin-bottom: 20px;">
+          <a href="index.html" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.86rem; color: var(--accent-emerald-light); text-decoration: none; font-weight: 500;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            Back to README (Overview)
+          </a>
+        </div>
+
+        <header class="hero" style="border-bottom: none; margin-bottom: 16px; padding-bottom: 0;">
+          <div class="hero-tagline">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"></circle></svg>
+            Internal Deep Dive
+          </div>
+          <h1>tally-to-xml-tdl &mdash; Guide</h1>
+          <p class="hero-subtitle">
+            Comprehensive reference on how the library works internally, how Tally TDL XML requests are structured, and how to extend the endpoints.
+          </p>
+        </header>
+
+        <hr style="border: none; border-top: 1px solid var(--border); margin: 24px 0 36px 0;">
+
+        <!-- 1. Architecture -->
+        <section class="section" id="architecture">
+          <h2 class="section-heading">
+            Architecture
+            <a href="#architecture" class="anchor-link">#</a>
+          </h2>
+          <p>
+            The library codebase is organized cleanly into modular domain layers under <code>src/v6/</code>:
+          </p>
+
+          <div class="file-tree">
+            <div><span class="dir">src/v6/</span></div>
+            <div>&nbsp;&nbsp;&boxur;&minus;&minus; <span class="file">body.xml</span> <span class="desc">&larr; shared base XML request envelope template</span></div>
+            <div>&nbsp;&nbsp;&boxur;&minus;&minus; <span class="dir">company/</span> <span class="desc">&larr; lists open companies in Tally</span></div>
+            <div>&nbsp;&nbsp;&boxur;&minus;&minus; <span class="dir">masters/</span> <span class="desc">&larr; master entities (stock, ledgers, units, groups)</span></div>
+            <div>&nbsp;&nbsp;&boxur;&minus;&minus; <span class="dir">vouchers/</span></div>
+            <div>&nbsp;&nbsp;&boxv;&nbsp;&nbsp;&boxur;&minus;&minus; <span class="dir">purchases/</span> <span class="desc">&larr; purchase voucher retrieval (period / all)</span></div>
+            <div>&nbsp;&nbsp;&boxv;&nbsp;&nbsp;&boxur;&minus;&minus; <span class="dir">sales/</span> <span class="desc">&larr; sales voucher retrieval</span></div>
+            <div>&nbsp;&nbsp;&boxur;&minus;&minus; <span class="dir">core/</span></div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&boxur;&minus;&minus; <span class="file">buildXml.js</span> <span class="desc">&larr; template engine filling placeholders</span></div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&boxur;&minus;&minus; <span class="dir">transport/</span> <span class="desc">&larr; HTTP POST client talking to Tally</span></div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&boxur;&minus;&minus; <span class="dir">response/</span> <span class="desc">&larr; fast XML-to-JSON parsing pipeline</span></div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&boxur;&minus;&minus; <span class="dir">execute/</span> <span class="desc">&larr; orchestrates the 3-phase execution cycle</span></div>
+          </div>
+
+          <p>Every domain module (company, masters, vouchers) strictly follows the exact same 3-phase pipeline:</p>
+          <ol class="step-list">
+            <li><strong>Template Load:</strong> Reads <code>body.xml</code> once at module load time via synchronous file reading (<code>fs.readFileSync</code>).</li>
+            <li><strong>Build:</strong> Invokes <code>buildXml(body, { staticVariables, tdlMessage })</code> to substitute request variables into the XML template.</li>
+            <li><strong>Execute:</strong> Calls <code>executeXml(xml)</code>, which executes HTTP transport and returns the parsed JSON envelope.</li>
+          </ol>
+        </section>
+
+        <!-- 2. The XML Template -->
+        <section class="section" id="the-xml-template">
+          <h2 class="section-heading">
+            The XML template
+            <a href="#the-xml-template" class="anchor-link">#</a>
+          </h2>
+          <p>
+            <code>src/v6/body.xml</code> defines the standard Tally HTTP export envelope containing two exact interpolation placeholders:
+          </p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-lang-tag"><span class="dot"></span>xml &bull; body.xml</div>
+              <button class="copy-btn" type="button">Copy</button>
+            </div>
+            <pre><code><span class="syn-tag">&lt;ENVELOPE&gt;</span>
+  <span class="syn-tag">&lt;HEADER&gt;</span>
+    <span class="syn-tag">&lt;TALLYREQUEST&gt;</span>Export<span class="syn-tag">&lt;/TALLYREQUEST&gt;</span>
+    <span class="syn-tag">&lt;TYPE&gt;</span>Collection<span class="syn-tag">&lt;/TYPE&gt;</span>
+    <span class="syn-tag">&lt;ID&gt;</span>TDLID<span class="syn-tag">&lt;/ID&gt;</span>
+  <span class="syn-tag">&lt;/HEADER&gt;</span>
+  <span class="syn-tag">&lt;BODY&gt;</span>
+    <span class="syn-tag">&lt;DESC&gt;</span>
+      <span class="syn-tag">&lt;STATICVARIABLES&gt;</span>
+        <span class="syn-tag">&lt;SVEXPORTFORMAT&gt;</span>$$SysName:XML<span class="syn-tag">&lt;/SVEXPORTFORMAT&gt;</span>
+        {{STATICVARIABLES}}
+      <span class="syn-tag">&lt;/STATICVARIABLES&gt;</span>
+      <span class="syn-tag">&lt;TDL&gt;</span>
+        <span class="syn-tag">&lt;TDLMESSAGE&gt;</span>
+          <span class="syn-tag">&lt;COLLECTION</span> <span class="syn-prop">NAME</span>=<span class="syn-str">"TDLID"</span><span class="syn-tag">&gt;</span>
+            {{TDLMESSAGE}}
+          <span class="syn-tag">&lt;/COLLECTION&gt;</span>
+        <span class="syn-tag">&lt;/TDLMESSAGE&gt;</span>
+      <span class="syn-tag">&lt;/TDL&gt;</span>
+    <span class="syn-tag">&lt;/DESC&gt;</span>
+  <span class="syn-tag">&lt;/BODY&gt;</span>
+<span class="syn-tag">&lt;/ENVELOPE&gt;</span></code></pre>
+          </div>
+
+          <p>
+            <code>buildXml</code> executes a fast, zero-dependency string replacement:
+          </p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-lang-tag"><span class="dot"></span>javascript</div>
+              <button class="copy-btn" type="button">Copy</button>
+            </div>
+            <pre><code>body
+  .<span class="syn-fn">replace</span>(<span class="syn-str">"{{STATICVARIABLES}}"</span>, staticVariables)
+  .<span class="syn-fn">replace</span>(<span class="syn-str">"{{TDLMESSAGE}}"</span>, tdlMessage);</code></pre>
+          </div>
+
+          <p>
+            &bull; <strong><code>staticVariables</code></strong> carries context that Tally Prime requires prior to executing the query (e.g. active company name, export date windows).<br>
+            &bull; <strong><code>tdlMessage</code></strong> defines the TDL collection body specifying which object type and data fields Tally should retrieve.
+          </p>
+        </section>
+
+        <!-- 3. How TDL Queries Work -->
+        <section class="section" id="how-tdl-queries-work">
+          <h2 class="section-heading">
+            How TDL queries work
+            <a href="#how-tdl-queries-work" class="anchor-link">#</a>
+          </h2>
+          <p>
+            Tally Prime's HTTP interface parses a <code>&lt;COLLECTION&gt;</code> block defined in TDL (Tally Definition Language). The <code>&lt;TYPE&gt;</code> tag points to the internal Tally schema object, and each <code>&lt;FETCH&gt;</code> tag selects a specific attribute to include in the payload.
+          </p>
+
+          <h3 class="sub-heading">Example 1: Fetching Ledgers with GSTIN</h3>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-lang-tag"><span class="dot"></span>xml &bull; TDL Collection</div>
+              <button class="copy-btn" type="button">Copy</button>
+            </div>
+            <pre><code><span class="syn-tag">&lt;COLLECTION</span> <span class="syn-prop">NAME</span>=<span class="syn-str">"TDLID"</span><span class="syn-tag">&gt;</span>
+  <span class="syn-tag">&lt;TYPE&gt;</span>Ledger<span class="syn-tag">&lt;/TYPE&gt;</span>
+  <span class="syn-tag">&lt;FETCH&gt;</span>$$Alias:Name<span class="syn-tag">&lt;/FETCH&gt;</span>
+  <span class="syn-tag">&lt;FETCH&gt;</span>GSTRegistrationType<span class="syn-tag">&lt;/FETCH&gt;</span>
+  <span class="syn-tag">&lt;FETCH&gt;</span>GSTIN<span class="syn-tag">&lt;/FETCH&gt;</span>
+<span class="syn-tag">&lt;/COLLECTION&gt;</span></code></pre>
+          </div>
+
+          <p>This maps directly to the <code>ledgerNamesWithDetails</code> definition stored in <code>masters.json</code>:</p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-lang-tag"><span class="dot"></span>json &bull; masters.json</div>
+              <button class="copy-btn" type="button">Copy</button>
+            </div>
+            <pre><code>{
+  <span class="syn-prop">"ledgerNamesWithDetails"</span>: {
+    <span class="syn-prop">"staticVariables"</span>: <span class="syn-str">"&lt;SVEXPORTFORMAT&gt;$$SysName:XML&lt;/SVEXPORTFORMAT&gt;"</span>,
+    <span class="syn-prop">"tdlMessage"</span>: <span class="syn-str">"&lt;TYPE&gt;Ledger&lt;/TYPE&gt;&lt;FETCH&gt;$$Alias:Name&lt;/FETCH&gt;&lt;FETCH&gt;GSTRegistrationType&lt;/FETCH&gt;&lt;FETCH&gt;GSTIN&lt;/FETCH&gt;"</span>
+  }
+}</code></pre>
+          </div>
+
+          <h3 class="sub-heading">Example 2: Purchase Vouchers with Inventory Entries</h3>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-lang-tag"><span class="dot"></span>xml &bull; TDL Collection</div>
+              <button class="copy-btn" type="button">Copy</button>
+            </div>
+            <pre><code><span class="syn-tag">&lt;COLLECTION</span> <span class="syn-prop">NAME</span>=<span class="syn-str">"TDLID"</span><span class="syn-tag">&gt;</span>
+  <span class="syn-tag">&lt;TYPE&gt;</span>Vouchers:VoucherType<span class="syn-tag">&lt;/TYPE&gt;</span>
+  <span class="syn-tag">&lt;CHILDOF&gt;</span>$$$$VchTypePurchase<span class="syn-tag">&lt;/CHILDOF&gt;</span>
+  <span class="syn-tag">&lt;BELONGSTO&gt;</span>Yes<span class="syn-tag">&lt;/BELONGSTO&gt;</span>
+  <span class="syn-tag">&lt;FETCH&gt;</span>AllInventoryEntries<span class="syn-tag">&lt;/FETCH&gt;</span>
+  <span class="syn-tag">&lt;FETCH&gt;</span>Date<span class="syn-tag">&lt;/FETCH&gt;</span>
+<span class="syn-tag">&lt;/COLLECTION&gt;</span></code></pre>
+          </div>
+
+          <p>
+            &bull; <code>$$$$VchTypePurchase</code> is Tally's internal formula constant identifying Purchase vouchers.<br>
+            &bull; <code>&lt;CHILDOF&gt;</code> and <code>&lt;BELONGSTO&gt;</code> restrict the collection to only vouchers inheriting from the Purchase voucher type hierarchy.
+          </p>
+        </section>
+
+        <!-- 4. Core Modules -->
+        <section class="section" id="core-modules">
+          <h2 class="section-heading">
+            Core modules
+            <a href="#core-modules" class="anchor-link">#</a>
+          </h2>
+
+          <h3 class="sub-heading"><code>buildXml(body, { staticVariables, tdlMessage })</code></h3>
+          <p>Pure string template replacer. Deterministic, fast, with zero side effects.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-lang-tag"><span class="dot"></span>javascript</div>
+              <button class="copy-btn" type="button">Copy</button>
+            </div>
+            <pre><code><span class="syn-kw">import</span> { buildXml } <span class="syn-kw">from</span> <span class="syn-str">"tally-to-xml-tdl/src/v6/core/buildXml.js"</span>;
+
+<span class="syn-kw">const</span> xml = <span class="syn-fn">buildXml</span>(body, {
+  staticVariables: <span class="syn-str">"&lt;SVCURRENTCOMPANY&gt;MyCompany&lt;/SVCURRENTCOMPANY&gt;"</span>,
+  tdlMessage: <span class="syn-str">"&lt;TYPE&gt;Ledger&lt;/TYPE&gt;&lt;FETCH&gt;$$Alias:Name&lt;/FETCH&gt;"</span>
+});</code></pre>
+          </div>
+
+          <h3 class="sub-heading"><code>sendXml({ xml, url })</code></h3>
+          <p>Performs HTTP POST to Tally's local server port using Node.js native <code>fetch</code>. Returns raw XML response string.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-lang-tag"><span class="dot"></span>javascript</div>
+              <button class="copy-btn" type="button">Copy</button>
+            </div>
+            <pre><code><span class="syn-kw">import</span> { sendXml } <span class="syn-kw">from</span> <span class="syn-str">"tally-to-xml-tdl/src/v6/core/transport/http.js"</span>;
+
+<span class="syn-kw">const</span> rawXml = <span class="syn-kw">await</span> <span class="syn-fn">sendXml</span>({ xml, url: <span class="syn-str">"http://localhost:9000"</span> });</code></pre>
+          </div>
+
+          <h3 class="sub-heading"><code>xmlToJson(xml)</code></h3>
+          <p>High-performance wrapper over <code>fast-xml-parser</code> that produces a plain JavaScript object.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-lang-tag"><span class="dot"></span>javascript</div>
+              <button class="copy-btn" type="button">Copy</button>
+            </div>
+            <pre><code><span class="syn-kw">import</span> { xmlToJson } <span class="syn-kw">from</span> <span class="syn-str">"tally-to-xml-tdl/src/v6/core/response/xmlToJson.js"</span>;
+
+<span class="syn-kw">const</span> json = <span class="syn-fn">xmlToJson</span>(rawXml);</code></pre>
+          </div>
+
+          <h3 class="sub-heading"><code>executeXml(xml)</code></h3>
+          <p>Glues <code>sendXml</code> and <code>xmlToJson</code> into a single invocation. Powers all public methods in the package.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-lang-tag"><span class="dot"></span>javascript</div>
+              <button class="copy-btn" type="button">Copy</button>
+            </div>
+            <pre><code><span class="syn-kw">import</span> { executeXml } <span class="syn-kw">from</span> <span class="syn-str">"tally-to-xml-tdl/src/v6/core/execute/executeXml.js"</span>;
+
+<span class="syn-kw">const</span> json = <span class="syn-kw">await</span> <span class="syn-fn">executeXml</span>(xml);</code></pre>
+          </div>
+        </section>
+
+        <!-- 5. Adding a New Master Query -->
+        <section class="section" id="adding-a-new-master-query">
+          <h2 class="section-heading">
+            Adding a new master query
+            <a href="#adding-a-new-master-query" class="anchor-link">#</a>
+          </h2>
+          <p>
+            Adding support for another master catalog (e.g. Cost Centres, Currency, Godowns) takes <strong>zero code changes</strong>:
+          </p>
+
+          <ol class="step-list">
+            <li>Open <code>src/v6/masters/masters.json</code>.</li>
+            <li>Add an entry with your desired TDL collection definition:</li>
+          </ol>
+
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-lang-tag"><span class="dot"></span>json &bull; masters.json</div>
+              <button class="copy-btn" type="button">Copy</button>
+            </div>
+            <pre><code>{
+  <span class="syn-prop">"costCentres"</span>: {
+    <span class="syn-prop">"staticVariables"</span>: <span class="syn-str">"&lt;SVEXPORTFORMAT&gt;$$SysName:XML&lt;/SVEXPORTFORMAT&gt;"</span>,
+    <span class="syn-prop">"tdlMessage"</span>: <span class="syn-str">"&lt;TYPE&gt;CostCentre&lt;/TYPE&gt;&lt;FETCH&gt;$$Alias:Name&lt;/FETCH&gt;"</span>
+  }
+}</code></pre>
+          </div>
+
+          <ol class="step-list" start="3">
+            <li>Call it immediately via the existing masters interface:</li>
+          </ol>
+
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-lang-tag"><span class="dot"></span>javascript</div>
+              <button class="copy-btn" type="button">Copy</button>
+            </div>
+            <pre><code><span class="syn-kw">const</span> result = <span class="syn-kw">await</span> masters.<span class="syn-fn">get</span>(<span class="syn-str">"My Company"</span>, <span class="syn-str">"costCentres"</span>);</code></pre>
+          </div>
+
+          <div class="callout callout-info">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <div>
+              <strong>Done!</strong> That is the entire modification. No functions or classes need to be authored.
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. Adding a New Voucher Type -->
+        <section class="section" id="adding-a-new-voucher-type">
+          <h2 class="section-heading">
+            Adding a new voucher type
+            <a href="#adding-a-new-voucher-type" class="anchor-link">#</a>
+          </h2>
+          <p>To support an additional voucher type (such as Receipts, Payments, or Journal):</p>
+
+          <ol class="step-list">
+            <li>Create the subfolder: <code>src/v6/vouchers/receipts/</code></li>
+            <li>Add an <code>info.json</code> file with your custom TDL query definition.</li>
+            <li>Add an <code>index.js</code> file matching the structure in <code>purchases/index.js</code>.</li>
+            <li>Export the module in <code>src/v6/vouchers/index.js</code>:</li>
+          </ol>
+
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-lang-tag"><span class="dot"></span>javascript &bull; vouchers/index.js</div>
+              <button class="copy-btn" type="button">Copy</button>
+            </div>
+            <pre><code><span class="syn-kw">export</span> * <span class="syn-kw">as</span> receipts <span class="syn-kw">from</span> <span class="syn-str">"./receipts/index.js"</span>;</code></pre>
+          </div>
+        </section>
+
+        <!-- 7. Error Handling -->
+        <section class="section" id="error-handling">
+          <h2 class="section-heading">
+            Error handling
+            <a href="#error-handling" class="anchor-link">#</a>
+          </h2>
+          <p>
+            The library intentionally does not mask or silently catch exceptions. If Tally Prime is stopped, native <code>fetch</code> will throw a standard <code>TypeError: fetch failed</code>.
+          </p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-lang-tag"><span class="dot"></span>javascript</div>
+              <button class="copy-btn" type="button">Copy</button>
+            </div>
+            <pre><code><span class="syn-kw">try</span> {
+  <span class="syn-kw">const</span> result = <span class="syn-kw">await</span> masters.<span class="syn-fn">get</span>(<span class="syn-str">"My Company"</span>, <span class="syn-str">"stockItems"</span>);
+} <span class="syn-kw">catch</span> (err) {
+  <span class="syn-kw">if</span> (err.cause?.code === <span class="syn-str">"ECONNREFUSED"</span>) {
+    console.<span class="syn-fn">error</span>(<span class="syn-str">"Tally is not running or HTTP port is not enabled."</span>);
+  } <span class="syn-kw">else</span> {
+    <span class="syn-kw">throw</span> err;
+  }
+}</code></pre>
+          </div>
+
+          <p><strong>Troubleshooting Diagnostics:</strong></p>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Diagnostic</th>
+                  <th>Root Cause &amp; Resolution</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="error-chip">ECONNREFUSED</span></td>
+                  <td>Tally Prime application is closed, or HTTP port 9000 is disabled in F12 Advanced Configuration.</td>
+                </tr>
+                <tr>
+                  <td><span class="error-chip">ECONNRESET</span></td>
+                  <td>Tally terminated the connection prematurely during high volume payload transmission.</td>
+                </tr>
+                <tr>
+                  <td><span class="query-chip">Empty COLLECTION</span></td>
+                  <td>The active company name string does not match exactly, or no vouchers exist in the specified date range.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Bottom Return Link -->
+        <div class="crosslink-banner" style="margin-top: 48px;">
+          <div class="crosslink-content">
+            <div class="crosslink-icon">📖</div>
+            <div class="crosslink-text">
+              <h4>Back to README</h4>
+              <p>Return to the main overview, quick start, installation, and public API reference.</p>
+            </div>
+          </div>
+          <a href="index.html" class="btn-pill">
+            &larr; View README
+          </a>
+        </div>
+
+      </article>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div>
+        <span>tally-to-xml-tdl</span> &bull; MIT License &bull; <a href="https://keshavsoft.com" target="_blank" rel="noopener" style="color: var(--accent-emerald-light);">keshavsoft.com</a>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">README</a>
+        <a href="guide.html">Architecture Guide</a>
+        <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="docs.js"></script>
+</body>
+</html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>tally-to-xml-tdl — Node.js to Tally Prime Bridge</title>
+  <meta name="description" content="Pull clean, structured JSON from Tally Prime via HTTP XML/TDL requests with zero plugins.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+          </svg>
+        </div>
+        <div class="brand-title">
+          <span>tally-to-xml-tdl</span>
+          <span class="version-badge">v1.6.1</span>
+        </div>
+      </a>
+
+      <!-- Navigation Tabs linking both pages -->
+      <nav class="nav-links">
+        <a href="index.html" class="nav-link active" title="README and Quickstart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          README (Overview)
+        </a>
+        <a href="guide.html" class="nav-link" title="Deep Architectural Guide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+          Full Guide
+        </a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="quick-install-pill" title="Click to copy install command">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span class="install-text">npm i tally-to-xml-tdl</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="page-wrapper">
+    <div class="doc-single-column">
+
+      <!-- Hero Header -->
+      <header class="hero">
+        <div class="hero-tagline">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"></circle></svg>
+          Tally Prime HTTP Client
+        </div>
+        <h1>tally-to-xml-tdl</h1>
+        <p class="hero-subtitle">
+          Pull clean, structured JSON from <strong>Tally Prime</strong> — no plugins, no configuration overhead, just Node.js.
+        </p>
+        <p>
+          Tally exposes a local HTTP port. This library speaks to it directly via TDL-based XML requests and returns plain JavaScript objects ready to query, inspect, and use.
+        </p>
+
+        <div class="hero-meta">
+          <div class="meta-chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Zero Tally Plugins
+          </div>
+          <div class="meta-chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Native Node.js 18+ Fetch
+          </div>
+          <div class="meta-chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Pure ESM Module
+          </div>
+        </div>
+      </header>
+
+      <!-- Prominent Cross-Link Banner to Guide -->
+      <div class="crosslink-banner">
+        <div class="crosslink-content">
+          <div class="crosslink-icon">📖</div>
+          <div class="crosslink-text">
+            <h4>Looking for architecture and TDL internals?</h4>
+            <p>Explore the XML template engine, TDL collections, and step-by-step guides for adding queries.</p>
+          </div>
+        </div>
+        <a href="guide.html" class="btn-pill">
+          Full Guide
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+
+      <!-- How It Works Section -->
+      <section class="section" id="how-it-works">
+        <h2 class="section-heading">
+          How it works
+          <a href="#how-it-works" class="anchor-link">#</a>
+        </h2>
+
+        <div class="flow-diagram">
+          <div class="flow-steps-grid">
+            <div class="flow-step-card">
+              <div class="flow-step-num">1</div>
+              <div class="flow-step-title">Your Code</div>
+              <div class="flow-step-desc">Invoke query with company name &amp; date range</div>
+            </div>
+            <div class="flow-step-card">
+              <div class="flow-step-num">2</div>
+              <div class="flow-step-title">buildXml()</div>
+              <div class="flow-step-desc">Fills standard XML envelope with TDL payload</div>
+            </div>
+            <div class="flow-step-card">
+              <div class="flow-step-num">3</div>
+              <div class="flow-step-title">HTTP POST</div>
+              <div class="flow-step-desc">Dispatches to Tally on port <code>:9000</code></div>
+            </div>
+            <div class="flow-step-card">
+              <div class="flow-step-num">4</div>
+              <div class="flow-step-title">xmlToJson()</div>
+              <div class="flow-step-desc">Parses response envelope into plain JS object</div>
+            </div>
+          </div>
+
+          <div class="flow-pipeline-bar">
+            <span>Your Code</span>
+            <span class="arrow">&rarr;</span>
+            <span class="active">buildXml()</span>
+            <span class="arrow">&rarr;</span>
+            <span>HTTP POST</span>
+            <span class="arrow">&rarr;</span>
+            <span class="active">Tally :9000</span>
+            <span class="arrow">&rarr;</span>
+            <span>XML Response</span>
+            <span class="arrow">&rarr;</span>
+            <span class="active">xmlToJson()</span>
+            <span class="arrow">&rarr;</span>
+            <span>JSON Object</span>
+          </div>
+        </div>
+
+        <p>Three operations happen seamlessly inside every function call:</p>
+        <ol class="step-list">
+          <li><strong>Build</strong> &mdash; a shared <code>body.xml</code> template is populated with your active company name, date filters, and TDL collection message.</li>
+          <li><strong>Send</strong> &mdash; the formulated XML request is POSTed to Tally's local HTTP listener (<code>http://localhost:9000</code> by default).</li>
+          <li><strong>Parse</strong> &mdash; Tally's raw XML response envelope is converted into a standard JavaScript object graph.</li>
+        </ol>
+
+        <p>
+          You receive the <strong>raw envelope</strong>, exactly as Tally produced it. There is no lossy data manipulation, no stripping of attributes, and no hidden transformation.
+        </p>
+      </section>
+
+      <!-- Install Section -->
+      <section class="section" id="install">
+        <h2 class="section-heading">
+          Install
+          <a href="#install" class="anchor-link">#</a>
+        </h2>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-lang-tag">
+              <span class="dot"></span>
+              bash
+            </div>
+            <button class="copy-btn" type="button">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>npm install tally-to-xml-tdl</code></pre>
+        </div>
+
+        <div class="callout callout-info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          <div>
+            <strong>Prerequisite:</strong> Ensure Tally Prime is running locally with HTTP enabled at:
+            <br>
+            <code class="inline-code">Gateway of Tally &rarr; F12 &rarr; Advanced Configuration &rarr; Enable HTTP: Yes (Port: 9000)</code>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Start Section -->
+      <section class="section" id="quick-start">
+        <h2 class="section-heading">
+          Quick start
+          <a href="#quick-start" class="anchor-link">#</a>
+        </h2>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-lang-tag">
+              <span class="dot"></span>
+              javascript
+            </div>
+            <button class="copy-btn" type="button">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              Copy
+            </button>
+          </div>
+          <pre><code><span class="syn-kw">import</span> { company, masters, vouchers } <span class="syn-kw">from</span> <span class="syn-str">"tally-to-xml-tdl"</span>;
+
+<span class="syn-comment">// 1. List all open companies in Tally</span>
+<span class="syn-kw">const</span> companies = <span class="syn-kw">await</span> <span class="syn-fn">company</span>();
+
+<span class="syn-comment">// 2. Get stock items for an active company</span>
+<span class="syn-kw">const</span> stock = <span class="syn-kw">await</span> masters.<span class="syn-fn">get</span>(<span class="syn-str">"My Company"</span>, <span class="syn-str">"stockItems"</span>);
+
+<span class="syn-comment">// 3. Get purchase vouchers for a specified date range</span>
+<span class="syn-kw">const</span> purchases = <span class="syn-kw">await</span> vouchers.purchases.<span class="syn-fn">period</span>(
+  <span class="syn-str">"My Company"</span>,
+  <span class="syn-str">"1-Apr-2026"</span>,
+  <span class="syn-str">"30-Apr-2026"</span>
+);</code></pre>
+        </div>
+      </section>
+
+      <!-- API Reference Section -->
+      <section class="section" id="api">
+        <h2 class="section-heading">
+          API Reference
+          <a href="#api" class="anchor-link">#</a>
+        </h2>
+
+        <!-- company() -->
+        <h3 class="sub-heading" id="api-company">
+          <code>company()</code>
+        </h3>
+        <p>Lists all companies currently opened in the running Tally Prime instance.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-lang-tag"><span class="dot"></span>javascript</div>
+            <button class="copy-btn" type="button">Copy</button>
+          </div>
+          <pre><code><span class="syn-kw">import</span> { company } <span class="syn-kw">from</span> <span class="syn-str">"tally-to-xml-tdl"</span>;
+
+<span class="syn-kw">const</span> result = <span class="syn-kw">await</span> <span class="syn-fn">company</span>();
+<span class="syn-comment">// result.ENVELOPE.BODY.DATA.COLLECTION.COMPANY &rarr; [ { NAME: "..." }, ... ]</span></code></pre>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid var(--border); margin: 32px 0;">
+
+        <!-- masters.get() -->
+        <h3 class="sub-heading" id="api-masters">
+          <code>masters.get(company, queryId)</code>
+        </h3>
+        <p>Fetches master catalogs (stock items, ledgers, units, groups) for a given company.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-lang-tag"><span class="dot"></span>javascript</div>
+            <button class="copy-btn" type="button">Copy</button>
+          </div>
+          <pre><code><span class="syn-kw">import</span> { masters } <span class="syn-kw">from</span> <span class="syn-str">"tally-to-xml-tdl"</span>;
+
+<span class="syn-kw">const</span> result = <span class="syn-kw">await</span> masters.<span class="syn-fn">get</span>(<span class="syn-str">"My Company"</span>, <span class="syn-str">"stockItems"</span>);</code></pre>
+        </div>
+
+        <p><strong>Supported <code>queryId</code> parameters:</strong></p>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>queryId</th>
+                <th>Returned Data Structure</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="query-chip">uom</span></td>
+                <td>Units of Measure definitions</td>
+              </tr>
+              <tr>
+                <td><span class="query-chip">stockItems</span></td>
+                <td>Stock item names list</td>
+              </tr>
+              <tr>
+                <td><span class="query-chip">stockItemsWithBaseUnits</span></td>
+                <td>Stock items paired with their base units</td>
+              </tr>
+              <tr>
+                <td><span class="query-chip">ledgerNames</span></td>
+                <td>Ledger account names</td>
+              </tr>
+              <tr>
+                <td><span class="query-chip">ledgerNamesWithDetails</span></td>
+                <td>Ledgers with GST registration type and GSTIN</td>
+              </tr>
+              <tr>
+                <td><span class="query-chip">ledgerNamesMoreDetails</span></td>
+                <td>Ledgers with extended GST registration details table</td>
+              </tr>
+              <tr>
+                <td><span class="query-chip">stockGroups</span></td>
+                <td>Stock group names hierarchy</td>
+              </tr>
+              <tr>
+                <td><span class="query-chip">stockGroupsAndParent</span></td>
+                <td>Stock groups along with parent group relationships</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid var(--border); margin: 32px 0;">
+
+        <!-- vouchers.purchases -->
+        <h3 class="sub-heading" id="api-vouchers">
+          <code>vouchers.purchases.period(company, fromDate, toDate)</code>
+        </h3>
+        <p>Fetches purchase vouchers within a date window including inventory details.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-lang-tag"><span class="dot"></span>javascript</div>
+            <button class="copy-btn" type="button">Copy</button>
+          </div>
+          <pre><code><span class="syn-kw">import</span> { vouchers } <span class="syn-kw">from</span> <span class="syn-str">"tally-to-xml-tdl"</span>;
+
+<span class="syn-kw">const</span> result = <span class="syn-kw">await</span> vouchers.purchases.<span class="syn-fn">period</span>(
+  <span class="syn-str">"My Company"</span>,
+  <span class="syn-str">"1-Apr-2026"</span>,
+  <span class="syn-str">"30-Apr-2026"</span>
+);
+
+<span class="syn-kw">const</span> voucherList = result.ENVELOPE.BODY.DATA.COLLECTION.VOUCHER;
+console.<span class="syn-fn">log</span>(voucherList.length); <span class="syn-comment">// e.g. 46</span></code></pre>
+        </div>
+
+        <!-- vouchers.purchases.all -->
+        <h3 class="sub-heading">
+          <code>vouchers.purchases.all(company)</code>
+        </h3>
+        <p>Fetches <strong>all</strong> purchase vouchers across all available financial dates.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-lang-tag"><span class="dot"></span>javascript</div>
+            <button class="copy-btn" type="button">Copy</button>
+          </div>
+          <pre><code><span class="syn-kw">const</span> result = <span class="syn-kw">await</span> vouchers.purchases.<span class="syn-fn">all</span>(<span class="syn-str">"My Company"</span>);</code></pre>
+        </div>
+
+        <!-- vouchers.sales.get -->
+        <h3 class="sub-heading">
+          <code>vouchers.sales.get(company, fromDate, toDate, "period")</code>
+        </h3>
+        <p>Fetches sales vouchers for a date range.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-lang-tag"><span class="dot"></span>javascript</div>
+            <button class="copy-btn" type="button">Copy</button>
+          </div>
+          <pre><code><span class="syn-kw">const</span> result = <span class="syn-kw">await</span> vouchers.sales.<span class="syn-fn">get</span>(
+  <span class="syn-str">"My Company"</span>,
+  <span class="syn-str">"1-Apr-2026"</span>,
+  <span class="syn-str">"30-Apr-2026"</span>,
+  <span class="syn-str">"period"</span>
+);</code></pre>
+        </div>
+      </section>
+
+      <!-- Response Shape Section -->
+      <section class="section" id="response-shape">
+        <h2 class="section-heading">
+          Response shape
+          <a href="#response-shape" class="anchor-link">#</a>
+        </h2>
+        <p>Every function call returns the raw Tally XML envelope directly translated into JSON:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-lang-tag"><span class="dot"></span>json</div>
+            <button class="copy-btn" type="button">Copy</button>
+          </div>
+          <pre><code>{
+  <span class="syn-prop">"ENVELOPE"</span>: {
+    <span class="syn-prop">"HEADER"</span>: { <span class="syn-comment">/* Tally export metadata */</span> },
+    <span class="syn-prop">"BODY"</span>: {
+      <span class="syn-prop">"DATA"</span>: {
+        <span class="syn-prop">"COLLECTION"</span>: {
+          <span class="syn-prop">"VOUCHER"</span>: [
+            {
+              <span class="syn-prop">"DATE"</span>: <span class="syn-str">"20260401"</span>,
+              <span class="syn-prop">"GUID"</span>: <span class="syn-str">"..."</span>,
+              <span class="syn-prop">"VOUCHERTYPENAME"</span>: <span class="syn-str">"Purchase"</span>
+            }
+          ]
+          <span class="syn-comment">// Or STOCKITEM, LEDGER, UNIT depending on query</span>
+        }
+      }
+    }
+  }
+}</code></pre>
+        </div>
+
+        <p>To extract the actual record array in your application:</p>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-lang-tag"><span class="dot"></span>javascript</div>
+            <button class="copy-btn" type="button">Copy</button>
+          </div>
+          <pre><code><span class="syn-kw">const</span> records = result.ENVELOPE.BODY.DATA.COLLECTION.VOUCHER;</code></pre>
+        </div>
+      </section>
+
+      <!-- Date Format Section -->
+      <section class="section" id="date-format">
+        <h2 class="section-heading">
+          Date format
+          <a href="#date-format" class="anchor-link">#</a>
+        </h2>
+        <p>
+          Tally Prime requires dates formatted as day, month abbreviation, and year. For example:
+        </p>
+        <div class="callout callout-info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          <div>
+            Format pattern: <code class="inline-code">"D-MMM-YYYY"</code> (e.g. <strong style="color:var(--text-main); font-family:var(--font-mono);">"1-Apr-2026"</strong>, <strong style="color:var(--text-main); font-family:var(--font-mono);">"30-Apr-2026"</strong>)
+          </div>
+        </div>
+      </section>
+
+      <!-- Requirements Section -->
+      <section class="section" id="requirements">
+        <h2 class="section-heading">
+          Requirements
+          <a href="#requirements" class="anchor-link">#</a>
+        </h2>
+
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Requirement</th>
+                <th>Specification</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Node.js</strong></td>
+                <td><code>&gt;=18</code> (leverages native global <code>fetch</code>)</td>
+              </tr>
+              <tr>
+                <td><strong>Tally Prime</strong></td>
+                <td>Any modern release with HTTP port export enabled</td>
+              </tr>
+              <tr>
+                <td><strong>HTTP Listener</strong></td>
+                <td>Port <code>9000</code> active by default in Tally</td>
+              </tr>
+              <tr>
+                <td><strong>Module System</strong></td>
+                <td>Pure ECMAScript Module (<code>"type": "module"</code>)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Bottom Banner Linking to Guide -->
+      <div class="crosslink-banner" style="margin-top: 40px;">
+        <div class="crosslink-content">
+          <div class="crosslink-icon">🧭</div>
+          <div class="crosslink-text">
+            <h4>Ready to dive deeper?</h4>
+            <p>Learn how the XML envelope is templated, how TDL queries work, and how to add new master and voucher endpoints.</p>
+          </div>
+        </div>
+        <a href="guide.html" class="btn-pill">
+          Go to Guide &rarr;
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div>
+        <span>tally-to-xml-tdl</span> &bull; MIT License &bull; <a href="https://keshavsoft.com" target="_blank" rel="noopener" style="color: var(--accent-emerald-light);">keshavsoft.com</a>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">README</a>
+        <a href="guide.html">Architecture Guide</a>
+        <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="docs.js"></script>
+</body>
+</html>
