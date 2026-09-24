@@ -1,6 +1,6 @@
 {
-  "name": "tally-xml-tdl",
-  "version": "1.2.1",
+  "name": "tally-to-xml-tdl",
+  "version": "1.6.1",
   "description": "Simple, clean TDL and XML extraction and manipulation tools for Tally",
   "type": "module",
   "main": "src/index.js",
@@ -15,7 +15,7 @@
     }
   },
   "files": [
-    "src/v2",
+    "src/v6",
     "src/index.js",
     "index.js",
     "index.d.ts",
@@ -25,10 +25,10 @@
   "homepage": "https://keshavsoft.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/keshavsoft/tally-xml-tdl"
+    "url": "https://github.com/keshavsoft/tally-to-xml-tdl"
   },
   "bugs": {
-    "url": "https://github.com/keshavsoft/tally-xml-tdl/issues"
+    "url": "https://github.com/keshavsoft/tally-to-xml-tdl/issues"
   },
   "dependencies": {
     "fast-xml-parser": "^5.11.1"
