@@ -1,0 +1,86 @@
+{
+  "company": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>Company</TYPE><FETCH>$$Alias:Name</FETCH>"
+  },
+  "allPurchases": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>Vouchers</TYPE><FETCH>Date</FETCH>"
+  },
+  "purchasesPeriod": {
+    "staticVariables": "<SVFROMDATE TYPE=\"Date\">1-Apr-2026</SVFROMDATE><SVTODATE TYPE=\"Date\">30-Apr-2026</SVTODATE>",
+    "tdlMessage": "<TYPE>Vouchers</TYPE><FETCH>Date</FETCH>"
+  },
+  "uom": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>Unit</TYPE><FETCH>$$Alias:Name</FETCH>"
+  },
+  "stockItems": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>StockItem</TYPE><FETCH>$$Alias:Name</FETCH>"
+  },
+  "stockItemsWithBaseUnits": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>StockItem</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>BaseUnits</FETCH>"
+  },
+  "ledgerNames": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>Ledger</TYPE><FETCH>$$Alias:Name</FETCH>"
+  },
+  "ledgerNamesWithDetails": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>Ledger</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>GSTRegistrationType</FETCH><FETCH>GSTIN</FETCH>"
+  },
+  "ledgerNamesMoreDetails": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>Ledger</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>LEDGSTREGDETAILS.LIST</FETCH>"
+  },
+  "stockGroups": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>StockGroup</TYPE><FETCH>$$Alias:Name</FETCH>"
+  },
+  "stockGroupsAndParent": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>StockGroup</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>Parent</FETCH>"
+  },
+  "purchases1": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT><SVFROMDATE>1-Apr-2026</SVFROMDATE><SVTODATE>30-Apr-2026</SVTODATE>",
+    "tdlMessage": "<TYPE>Voucher</TYPE><FILTER>$$IsPurchase:$VoucherTypeName</FILTER><FETCH>Date</FETCH><FETCH>VoucherNumber</FETCH><FETCH>VoucherTypeName</FETCH><FETCH>PartyLedgerName</FETCH><FETCH>Amount</FETCH>"
+  },
+  "purchases2": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT><SVFROMDATE>1-Apr-2026</SVFROMDATE><SVTODATE>30-Apr-2026</SVTODATE>",
+    "tdlMessage": "<TYPE>Vouchers:VoucherType</TYPE><CHILDOF>$$VchTypePurchase</CHILDOF><BELONGSTO>Yes</BELONGSTO><FETCH>Date, VoucherNumber, VoucherTypeName, PartyLedgerName, AllInventoryEntries</FETCH>"
+  },
+  "purchases3": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT><SVFROMDATE>1-Apr-2026</SVFROMDATE><SVTODATE>1-Apr-2026</SVTODATE>",
+    "tdlMessage": "<TYPE>Voucher</TYPE><SYSTEM TYPE=\"Formulae\" NAME=\"DateFilter\">$Date &gt;= ##SVFROMDATE AND $Date &lt;= ##SVTODATE</SYSTEM><FILTER>DateFilter</FILTER><FETCH>Date</FETCH><FETCH>VoucherNumber</FETCH><FETCH>VoucherTypeName</FETCH><FETCH>PartyLedgerName</FETCH><FETCH>AllInventoryEntries</FETCH>"
+  },
+  "purchases4": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT><SVFROMDATE>1-Apr-2026</SVFROMDATE><SVTODATE>1-Apr-2026</SVTODATE>",
+    "tdlMessage": "<SYSTEM TYPE=\"Formula\" NAME=\"DateFilter\">$Date &gt;= ##SVFROMDATE AND $Date &lt;= ##SVTODATE</SYSTEM><COLLECTION NAME=\"KeshavPurchases\"><TYPE>Voucher</TYPE><FILTER>DateFilter</FILTER><FETCH>Date</FETCH><FETCH>VoucherNumber</FETCH><FETCH>VoucherTypeName</FETCH><FETCH>PartyLedgerName</FETCH><FETCH>AllInventoryEntries</FETCH></COLLECTION>"
+  },
+  "purchases5": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT><SVFROMDATE>1-Apr-2026</SVFROMDATE><SVTODATE>1-Apr-2026</SVTODATE>",
+    "tdlMessage": "<SYSTEM TYPE=\"Formulae\" NAME=\"DateFilter\">$Date &gt;= ##SVFROMDATE AND $Date &lt;= ##SVTODATE</SYSTEM><COLLECTION NAME=\"KeshavPurchases\"><TYPE>Voucher</TYPE><FILTER>DateFilter</FILTER><FETCH>Date</FETCH><FETCH>VoucherNumber</FETCH><FETCH>VoucherTypeName</FETCH><FETCH>PartyLedgerName</FETCH><FETCH>AllInventoryEntries</FETCH></COLLECTION>"
+  },
+  "purchases6": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT><SVFROMDATE>1-Apr-2026</SVFROMDATE><SVTODATE>1-Apr-2026</SVTODATE>",
+    "tdlMessage": "<COLLECTION NAME=\"KeshavPurchases\"><TYPE>Voucher</TYPE><FILTERS>DateFilter</FILTERS><FETCH>Date</FETCH><FETCH>VoucherNumber</FETCH><FETCH>VoucherTypeName</FETCH><FETCH>PartyLedgerName</FETCH><FETCH>AllInventoryEntries</FETCH></COLLECTION><SYSTEM TYPE=\"Formulae\" NAME=\"DateFilter\">$Date &gt;= ##SVFROMDATE AND $Date &lt;= ##SVTODATE</SYSTEM>"
+  },
+  "purchases7": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT><SVFROMDATE>1-Apr-2026</SVFROMDATE><SVTODATE>1-Apr-2026</SVTODATE>",
+    "tdlMessage": "<COLLECTION NAME=\"KeshavPurchases\"><TYPE>Voucher</TYPE><FILTERS>DateFilter</FILTERS><FETCH>Date</FETCH><FETCH>VoucherNumber</FETCH><FETCH>VoucherTypeName</FETCH><FETCH>PartyLedgerName</FETCH><FETCH>AllInventoryEntries</FETCH></COLLECTION><SYSTEM TYPE=\"Formulae\" NAME=\"DateFilter\">$Date &gt;= ##SVFROMDATE AND $Date &lt;= ##SVTODATE</SYSTEM>"
+  },
+  "purchases8": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<COLLECTION NAME=\"KeshavPurchases\"><TYPE>Voucher</TYPE><FETCH>Date</FETCH><FETCH>VoucherNumber</FETCH><FETCH>VoucherTypeName</FETCH></COLLECTION>"
+  },
+  "purchases9": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<COLLECTION NAME=\"KeshavPurchaseInventory\"><TYPE>Vouchers:VoucherType</TYPE><CHILDOF>$$VchTypePurchase</CHILDOF><BELONGSTO>Yes</BELONGSTO><FETCH>Date, VoucherNumber, VoucherTypeName, PartyLedgerName, AllInventoryEntries</FETCH></COLLECTION>"
+  },
+  "purchases10": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT><SVFROMDATE TYPE=\"Date\">4-Sep-2026</SVFROMDATE><SVTODATE TYPE=\"Date\">4-Sep-2026</SVTODATE>",
+    "tdlMessage": "<TYPE>Vouchers:VoucherType</TYPE><CHILDOF>$$VchTypePurchase</CHILDOF><BELONGSTO>Yes</BELONGSTO><FETCH>AllInventoryEntries</FETCH><FETCH>Date</FETCH>"
+  }
+}
