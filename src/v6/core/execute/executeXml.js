@@ -1,15 +1,16 @@
-// src/v13/core/execute/executeXml.js
-import cleanTallyResponse from "../cleanTallyResponse.js";
+// src/v4/core/execute/executeXml.js
 import { sendXml } from "../transport/http.js";
 import { xmlToJson } from "../response/xmlToJson.js";
 
-export const executeXmlAndClean = async (
+const startFunc = async (
     xml,
     { url = "http://localhost:9000" } = {}
 ) => {
     const rawXml = await sendXml({ xml, url });
 
     const json = xmlToJson(rawXml);
-
-    return cleanTallyResponse(json);
+// console.log("json :", json);
+    return json;
 };
+
+export default startFunc;

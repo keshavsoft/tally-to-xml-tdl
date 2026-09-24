@@ -1,0 +1,5 @@
+{
+  "period": {
+    "tdlMessage": "<TYPE>Vouchers:VoucherType</TYPE><CHILDOF>$$$$VchTypeSales</CHILDOF><BELONGSTO>Yes</BELONGSTO><FETCH>AllInventoryEntries</FETCH><FETCH>Date</FETCH>"
+  }
+}
