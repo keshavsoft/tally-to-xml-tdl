@@ -1,0 +1,12 @@
+{
+  "allPurchases": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>Vouchers</TYPE><FETCH>Date</FETCH>"
+  },
+  "purchasesPeriod1": {
+    "tdlMessage": "<TYPE>Vouchers</TYPE><FETCH>AllInventoryEntries</FETCH>"
+  },
+  "purchasesPeriod": {
+    "tdlMessage": "<TYPE>Vouchers:VoucherType</TYPE><CHILDOF>$$$$VchTypePurchase</CHILDOF><BELONGSTO>Yes</BELONGSTO><FETCH>AllInventoryEntries</FETCH><FETCH>Date</FETCH>"
+  }
+}
