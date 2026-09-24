@@ -4,7 +4,7 @@
 
 Tally exposes a local HTTP port. This library speaks to it directly via TDL-based XML requests and gives you back plain JavaScript objects ready to use.
 
-📖 **[Full guide →](docs/guide.md)** ([HTML Docs](docs/index.html)) — architecture, internals, how TDL queries work, and how to extend.
+🌐 **[Live Documentation](https://keshavsoft.github.io/tally-to-xml-tdl/)** &bull; 📖 **[Full Architecture Guide](https://keshavsoft.github.io/tally-to-xml-tdl/guide.html)** (or [offline markdown](docs/guide.md)) &bull; 📦 **[npm package](https://www.npmjs.com/package/tally-to-xml-tdl)**
 
 ---
 

@@ -226,25 +226,6 @@ body::before {
   opacity: 1;
 }
 
-.nav-icon-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-secondary);
-  padding: 6px 8px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--bg-surface);
-  transition: all 0.2s ease;
-  text-decoration: none;
-}
-
-.nav-icon-link:hover {
-  color: var(--text-main);
-  border-color: var(--border-light);
-  background: var(--bg-card);
-}
-
 /* Page Layout */
 .page-wrapper {
   flex: 1;
