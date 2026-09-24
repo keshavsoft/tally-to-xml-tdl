@@ -32,5 +32,8 @@
   },
   "dependencies": {
     "fast-xml-parser": "^5.11.1"
+  },
+  "devDependencies": {
+    "select-json-by-json": "^1.0.0"
   }
 }
