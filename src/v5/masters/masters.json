@@ -1,0 +1,34 @@
+{
+  "uom": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>Unit</TYPE><FETCH>$$Alias:Name</FETCH>"
+  },
+  "stockItems": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>StockItem</TYPE><FETCH>$$Alias:Name</FETCH>"
+  },
+  "stockItemsWithBaseUnits": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>StockItem</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>BaseUnits</FETCH>"
+  },
+  "ledgerNames": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>Ledger</TYPE><FETCH>$$Alias:Name</FETCH>"
+  },
+  "ledgerNamesWithDetails": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>Ledger</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>GSTRegistrationType</FETCH><FETCH>GSTIN</FETCH>"
+  },
+  "ledgerNamesMoreDetails": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>Ledger</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>LEDGSTREGDETAILS.LIST</FETCH>"
+  },
+  "stockGroups": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>StockGroup</TYPE><FETCH>$$Alias:Name</FETCH>"
+  },
+  "stockGroupsAndParent": {
+    "staticVariables": "<SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>",
+    "tdlMessage": "<TYPE>StockGroup</TYPE><FETCH>$$Alias:Name</FETCH><FETCH>Parent</FETCH>"
+  }
+}
